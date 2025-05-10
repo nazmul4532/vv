@@ -1,0 +1,61 @@
+#Step-0
+## Install docker, kind, cilium, and k9s to prepare emulating a cluster on your local device. 
+#Update the cluster_config.yaml to match your cluster setup. For now it is perfect.
+
+#Step-1
+sudo kind create cluster --name veri-vali-cluster --config cluster_config.yaml
+
+#Step-2
+## The k8sServiceHost variable int the cilium_values.yaml file has to be adjusted
+## After creating the cluster use kubectl get nodes -o wide
+## The nodes will be in not ready state, since the networking is disabled
+## Node down the ip Address of the controller node or control plane
+# That IP should be in the k8sServiceHost variable in the cilium_values.yaml file.
+# Once the IP has been replaced move to the next step.
+
+#Step-3
+cilium install --version 1.16.1 --values cilium_values.yaml 
+
+#Step-4 
+cilium status --wait
+## We now wait, it might show a lot of errors.
+## If the steps were followed correctly, within 5 minutes everything should be setup
+
+
+#Step-5 
+kubectl apply -f ingress_controller.yaml
+
+
+#Step-6
+## We will add an entry to the /etc/hosts so that what 
+vim /etc/hosts # in MacOs and Linux
+
+C:\Windows\System32\drivers\etc\hosts # for windows
+
+#Add the following entry 
+
+127.0.0.1 desco.biller.local ams.meter.local kaifa.meter.local
+
+
+##Build instructions
+docker build -t nazmul4532brainstation/desco-service:latest .
+docker push nazmul4532brainstation/desco-service:latest
+
+kubectl apply -n desco -f desco-service.yaml
+kubectl apply -n desco -f desco-ingress.yaml
+
+
+docker build -t nazmul4532brainstation/kaifa-service:latest .
+docker push nazmul4532brainstation/kaifa-service:latest
+
+kubectl apply -n kaifa -f kaifa-service.yaml
+kubectl apply -n kaifa -f kaifa-ingress.yaml
+
+docker build -t nazmul4532brainstation/ams-service:latest .
+docker push nazmul4532brainstation/ams-service:latest
+
+kubectl apply -n ams -f ams-service.yaml
+kubectl apply -n ams -f ams-ingress.yaml
+
+#If needed to delete kind cluster (Kind kinda Slows down PC)
+sudo kind delete cluster --name veri-vali-cluster 
