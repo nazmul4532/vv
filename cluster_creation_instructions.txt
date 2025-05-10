@@ -37,7 +37,7 @@ C:\Windows\System32\drivers\etc\hosts # for windows
 127.0.0.1 desco.biller.local ams.meter.local kaifa.meter.local
 
 
-##Build instructions
+#### Service Build and Deployment Instructions... Do these in their respective folders please
 docker build -t nazmul4532brainstation/desco-service:latest .
 docker push nazmul4532brainstation/desco-service:latest
 
@@ -57,5 +57,7 @@ docker push nazmul4532brainstation/ams-service:latest
 kubectl apply -n ams -f ams-service.yaml
 kubectl apply -n ams -f ams-ingress.yaml
 
-#If needed to delete kind cluster (Kind kinda Slows down PC)
+
+
+#If needed to delete kind cluster for any reason (Kind kinda Slows down PC)
 sudo kind delete cluster --name veri-vali-cluster 
