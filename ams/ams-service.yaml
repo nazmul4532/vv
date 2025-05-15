@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ams-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ams
+  template:
+    metadata:
+      labels:
+        app: ams
+    spec:
+      containers:
+        - name: ams
+          image: nazmul4532brainstation/ams-service:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ams-service
+spec:
+  selector:
+    app: ams
+  ports:
+    - port: 80
+      targetPort: 3000
+

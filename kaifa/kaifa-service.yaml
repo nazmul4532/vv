@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kaifa-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kaifa
+  template:
+    metadata:
+      labels:
+        app: kaifa
+    spec:
+      containers:
+        - name: kaifa
+          image: nazmul4532brainstation/kaifa-service:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kaifa-service
+spec:
+  selector:
+    app: kaifa
+  ports:
+    - port: 80
+      targetPort: 3000
+

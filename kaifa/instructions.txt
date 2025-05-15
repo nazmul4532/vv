@@ -1,0 +1,23 @@
+##First create the cluster
+##Then start by creating the namespace
+kubectl create namespace kaifa
+
+#Initialize Project
+yarn install
+
+
+##Build instructions
+##Before this, it might be necessary to use docker login 
+## The credentials are nazmul4532brainstation and Void@4532 for dockerhub
+## If you want to change repository, the service yaml file needs to be updated
+
+docker build -t nazmul4532brainstation/kaifa-service:latest .
+docker push nazmul4532brainstation/kaifa-service:latest
+
+
+##Deployment instructions
+## If you make any changes to the service
+## Just build it again and restart the deployment
+
+kubectl apply -n kaifa -f kaifa-service.yaml
+kubectl apply -n kaifa -f kaifa-ingress.yaml

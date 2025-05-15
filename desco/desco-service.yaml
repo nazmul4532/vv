@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: desco-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: desco
+  template:
+    metadata:
+      labels:
+        app: desco
+    spec:
+      containers:
+        - name: desco
+          image: nazmul4532brainstation/desco-service:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: KAIFA_HOST
+              value: "kaifa-service.kaifa.svc.cluster.local"
+            - name: KAIFA_PORT
+              value: "80"
+            - name: AMS_HOST
+              value: "ams-service.ams.svc.cluster.local"
+            - name: AMS_PORT
+              value: "80"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: desco-service
+spec:
+  selector:
+    app: desco
+  ports:
+    - port: 80
+      targetPort: 3000
+
