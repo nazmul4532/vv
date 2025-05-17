@@ -14,9 +14,18 @@ docker build -t nazmul4532brainstation/ams-service:latest .
 docker push nazmul4532brainstation/ams-service:latest
 
 
+### The images built on your system might take up a lot of storage so sometimes run this command
+docker system prune -a -f
+## This will delete any unnecessary and unused docker resource from your device
+
 ##Deployment instructions
 ## If you make any changes to the service
 ## Just build it again and restart the deployment
 
 kubectl apply -n ams -f ams-service.yaml
 kubectl apply -n ams -f ams-ingress.yaml
+
+
+
+
+

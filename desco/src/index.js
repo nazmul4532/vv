@@ -3,7 +3,7 @@ const express = require('express');
 const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 const KAIFA_HOST = process.env.KAIFA_HOST || 'localhost';
 const KAIFA_PORT = process.env.KAIFA_PORT || 4000;
@@ -15,7 +15,7 @@ const AMS_URL = `http://${AMS_HOST}:${AMS_PORT}/`;
 
 app.use(express.json());
 
-app.post('/desco', async (req, res) => {
+app.post('/', async (req, res) => {
   const input = req.body.input;
   const axiosConfig = {
     headers: { 'Content-Type': 'application/json' }
