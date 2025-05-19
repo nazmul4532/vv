@@ -1,8 +1,3 @@
-./.DS_Store
-./ams/.DS_Store
-./kaifa/.DS_Store
-./desco/.DS_Store
+**/.DS_Store
 
-./ams/node_modules
-./kaifa/node_modules
-./desco/node_modules
+**/node_modules
