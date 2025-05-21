@@ -1,0 +1,35 @@
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: kaifa-mongodb
+  namespace: mongodb
+spec:
+  members: 3
+  type: ReplicaSet
+  version: "6.0.4"
+  security:
+    authentication:
+      modes: ["SCRAM"]
+      ignoreUnknownUsers: true
+  users:
+    - name: nazmulhossain
+      db: admin
+      passwordSecretRef:
+        name: kaifa-mongo-password
+      roles:
+        - name: readWrite
+          db: kaifa
+      scramCredentialsSecretName: kaifa-scram-credentials
+  statefulSet:
+    spec:
+      serviceName: kaifa-mongo-service
+      volumeClaimTemplates:
+        - metadata:
+            name: data-volume
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            storageClassName: openebs-hostpath
+            resources:
+              requests:
+                storage: 5Gi
+

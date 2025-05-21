@@ -1,0 +1,26 @@
+#We will be installing mongodb operator
+helm repo add mongodb https://mongodb.github.io/helm-charts
+helm repo update
+helm upgrade --install mongodb-operator mongodb/community-operator --namespace mongodb --create-namespace
+
+kubectl create secret generic kaifa-mongo-password  --from-literal=password=LMuv3YImXfSmE6Eq  -n mongodb
+kubectl create secret generic ams-mongo-password  --from-literal=password=LMuv3YImXfSmE6Eq  -n mongodb
+
+kubectl apply -f kaifa-db.yaml
+kubectl apply -f ams-db.yaml
+
+kubectl apply -f mongo-express.yaml
+
+kubectl create secret generic ams-mongo-express-ui-secret \
+  --namespace=mongodb \
+  --from-literal=ME_CONFIG_BASICAUTH_USERNAME='admin' \
+  --from-literal=ME_CONFIG_BASICAUTH_PASSWORD='password'
+
+kubectl create secret generic kaifa-mongo-express-ui-secret \
+  --namespace=mongodb \
+  --from-literal=ME_CONFIG_BASICAUTH_USERNAME='admin' \
+  --from-literal=ME_CONFIG_BASICAUTH_PASSWORD='password'
+
+
+kubectl apply -f mongo-express.yaml
+kubectl apply -f mongo-express-ingress.yaml

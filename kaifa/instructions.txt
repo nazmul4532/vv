@@ -11,8 +11,15 @@ yarn install
 ## The credentials are nazmul4532brainstation and Void@4532 for dockerhub
 ## If you want to change repository, the service yaml file needs to be updated
 
+##Normally use these
 docker build -t nazmul4532brainstation/kaifa-service:latest .
 docker push nazmul4532brainstation/kaifa-service:latest
+
+##But Since I am building the image on a MacOS and running it on LinuxOs, I have to run
+docker build --platform linux/amd64 -t nazmul4532brainstation/kaifa-service:latest .
+docker push nazmul4532brainstation/kaifa-service:latest
+
+
 
 ### The images built on your system might take up a lot of storage so sometimes run this command
 docker system prune -a -f
@@ -24,3 +31,11 @@ docker system prune -a -f
 
 kubectl apply -n kaifa -f kaifa-service.yaml
 kubectl apply -n kaifa -f kaifa-ingress.yaml
+
+
+##Database Secret
+kubectl create secret generic kaifa-mongo-password \
+  --from-literal=password=LMuv3YImXfSmE6Eq \
+  -n kaifa
+
+kubectl apply -f kaifa-db.yaml

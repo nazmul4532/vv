@@ -1,0 +1,39 @@
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: ams-mongodb
+  namespace: mongodb
+spec:
+  members: 1
+  type: ReplicaSet
+  version: "6.0.4"
+
+  security:
+    authentication:
+      modes: ["SCRAM"]
+      ignoreUnknownUsers: true
+
+  users:
+    - name: nazmulhossain
+      db: admin
+      passwordSecretRef:
+        name: ams-mongo-password
+      roles:
+        - name: root
+          db: admin
+        - name: readWrite
+          db: ams
+      scramCredentialsSecretName: ams-scram-credentials  # must be a valid RFC1123 name :contentReference[oaicite:0]{index=0}
+
+  statefulSet:
+    spec:
+      serviceName: ams-mongo-service
+      volumeClaimTemplates:
+        - metadata:
+            name: data-volume
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            storageClassName: openebs-hostpath  # uses your default StorageClass
+            resources:
+              requests:
+                storage: 5Gi

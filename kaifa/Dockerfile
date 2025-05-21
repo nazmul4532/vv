@@ -17,5 +17,5 @@ COPY src ./src
 EXPOSE 4000
 
 # Start the app
-CMD ["node", "src/index.js"]
+CMD ["node", "src/server.js"]
 

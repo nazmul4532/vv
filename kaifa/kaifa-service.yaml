@@ -20,6 +20,12 @@ spec:
           env:
             - name: PORT
               value: "3000"
+            - name: LIMIT
+              value: "500"
+            - name: MONGODB_URI
+              value: "mongodb://nazmulhossain:LMuv3YImXfSmE6Eq@kaifa-mongo-service.mongodb.svc.cluster.local:27017/kaifa?authSource=admin"
+            - name: NODE_ENV
+              value: "production"
 
 ---
 apiVersion: v1

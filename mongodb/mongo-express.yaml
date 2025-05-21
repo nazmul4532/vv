@@ -1,0 +1,130 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ams-mongo-express-config
+  namespace: mongodb
+data:
+  # Connection to AMS replica set:
+  ME_CONFIG_MONGODB_SERVER: ams-mongo-service.mongodb.svc.cluster.local
+  ME_CONFIG_MONGODB_PORT: "27017"
+  ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+  ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+  ME_CONFIG_MONGODB_AUTH_USERNAME: nazmulhossain
+  ME_CONFIG_MONGODB_AUTH_PASSWORD: LMuv3YImXfSmE6Eq
+  ME_CONFIG_MONGODB_AUTH_SOURCE: admin
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ams-mongo-express
+  namespace: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ams-mongo-express
+  template:
+    metadata:
+      labels:
+        app: ams-mongo-express
+    spec:
+      containers:
+      - name: ams-mongo-express
+        image: mongo-express:latest
+        ports:
+        - containerPort: 8081
+        envFrom:
+        - configMapRef:
+            name: ams-mongo-express-config
+        - secretRef:
+            name: ams-mongo-express-ui-secret
+        # Optionally, limit resources
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ams-mongo-express-service
+  namespace: mongodb
+spec:
+  type: ClusterIP
+  selector:
+    app: ams-mongo-express
+  ports:
+    - port: 80
+      targetPort: 8081
+      protocol: TCP
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kaifa-mongo-express-config
+  namespace: mongodb
+data:
+  # Connection to kaifa replica set:
+  ME_CONFIG_MONGODB_SERVER: kaifa-mongo-service.mongodb.svc.cluster.local
+  ME_CONFIG_MONGODB_PORT: "27017"
+  ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+  ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+  ME_CONFIG_MONGODB_AUTH_USERNAME: nazmulhossain
+  ME_CONFIG_MONGODB_AUTH_PASSWORD: LMuv3YImXfSmE6Eq
+  ME_CONFIG_MONGODB_AUTH_SOURCE: admin
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kaifa-mongo-express
+  namespace: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kaifa-mongo-express
+  template:
+    metadata:
+      labels:
+        app: kaifa-mongo-express
+    spec:
+      containers:
+      - name: kaifa-mongo-express
+        image: mongo-express:latest
+        ports:
+        - containerPort: 8081
+        envFrom:
+        - configMapRef:
+            name: kaifa-mongo-express-config
+        - secretRef:
+            name: kaifa-mongo-express-ui-secret
+        # Optionally, limit resources
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kaifa-mongo-express-service
+  namespace: mongodb
+spec:
+  type: ClusterIP
+  selector:
+    app: kaifa-mongo-express
+  ports:
+    - port: 80
+      targetPort: 8081
+      protocol: TCP
+

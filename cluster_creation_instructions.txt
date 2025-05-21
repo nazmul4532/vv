@@ -30,6 +30,7 @@ kubectl apply -f ingress_controller.yaml
 ## We will add an entry to the /etc/hosts so that what 
 vim /etc/hosts # in MacOs and Linux
 
+
 C:\Windows\System32\drivers\etc\hosts # for windows
 
 #Add the following entry 
