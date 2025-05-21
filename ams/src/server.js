@@ -5,10 +5,18 @@ if (process.env.NODE_ENV !== 'production') {
 const app = require('./app');
 const connectToDatabase = require('./config/db');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4001;
 
-connectToDatabase().then(() => {
-  app.listen(PORT, () => {
-    console.log(`AMS running on port ${PORT}`);
-  });
-});
+const startServer = async () => {
+  try {
+    await connectToDatabase();
+    app.listen(PORT, () => {
+      console.log(`AMS running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to connect to database or start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
