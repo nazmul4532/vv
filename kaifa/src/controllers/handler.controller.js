@@ -35,7 +35,7 @@ const insertMeter = async (req, res) => {
   }
 
   try {
-    const newMeter = new Meter({ meterNo, ams: 'kaifa' });
+    const newMeter = new Meter({ meterNo });
     await newMeter.save();
     return res.status(201).send(`Meter number ${meterNo} inserted successfully`);
   } catch (err) {
@@ -55,7 +55,7 @@ const insertMultipleMeters = async (req, res) => {
     return res.status(400).send('Invalid input: inputs must be an array of numbers');
   }
 
-  const docs = meters.map(meterNo => ({ meterNo, ams: 'kaifa' }));
+  const docs = meters.map(meterNo => ({ meterNo }));
 
   try {
     const result = await Meter.insertMany(docs, { ordered: false });
