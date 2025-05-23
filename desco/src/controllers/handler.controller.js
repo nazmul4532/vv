@@ -33,13 +33,13 @@ const checkHealth = async (healthUrl, name) => {
 //     try {
 //       const kaifaResp = await axios.post(KAIFA_URL, { input }, axiosConfig);
 //       if (kaifaResp.status === 200) {
-//         return res.send(`Desco → ${kaifaResp.data}`);
+//         return res.send(`Bkash → ${kaifaResp.data}`);
 //       }
 //     } catch (kaifaErr) {
 //       if (kaifaErr.response && kaifaErr.response.status === 503) {
 //         console.log('Kaifa returned 503, checking AMS...');
 //       } else {
-//         return res.status(500).send('Desco → Error contacting Kaifa');
+//         return res.status(500).send('Bkash → Error contacting Kaifa');
 //       }
 //     }
 //   } else {
@@ -50,14 +50,14 @@ const checkHealth = async (healthUrl, name) => {
 //     try {
 //       const amsResp = await axios.post(AMS_URL, { input }, axiosConfig);
 //       if (amsResp.status === 200) {
-//         return res.send(`Desco → ${amsResp.data}`);
+//         return res.send(`Bkash → ${amsResp.data}`);
 //       }
 //     } catch {
-//       return res.status(503).send('Desco → Nobody can handle this request');
+//       return res.status(503).send('Bkash → Nobody can handle this request');
 //     }
 //   } else {
 //     console.log('Skipping AMS POST; service unhealthy');
-//     return res.status(503).send('Desco → Nobody can handle this request');
+//     return res.status(503).send('Bkash → Nobody can handle this request');
 //   }
 // };
 
@@ -69,23 +69,23 @@ const handlePost = async (req, res) => {
   try {
     const kaifaResp = await axios.post(KAIFA_URL, { input }, axiosConfig);
     if (kaifaResp.status === 200) {
-      return res.send(`Desco → ${kaifaResp.data}`);
+      return res.send(`Bkash → ${kaifaResp.data}`);
     }
   } catch (kaifaErr) {
     if (kaifaErr.response && kaifaErr.response.status === 503) {
       console.log('Kaifa returned 503, checking AMS...');
     } else {
-      return res.status(500).send('Desco → Error contacting Kaifa');
+      return res.status(500).send('Bkash → Error contacting Kaifa');
     }
   }
 
   try {
     const amsResp = await axios.post(AMS_URL, { input }, axiosConfig);
     if (amsResp.status === 200) {
-      return res.send(`Desco → ${amsResp.data}`);
+      return res.send(`Bkash → ${amsResp.data}`);
     }
   } catch {
-    return res.status(503).send('Desco → Nobody can handle this request');
+    return res.status(503).send('Bkash → Nobody can handle this request');
   }
 };
 
@@ -103,16 +103,16 @@ const handleHealthCheck = async (req, res) => {
   const unhealthyServices = results.filter(r => !r.healthy).map(r => r.name);
 
   if (unhealthyServices.length === 0) {
-    return res.status(200).send('Desco is healthy');
+    return res.status(200).send('Bkash is healthy');
   }
 
   if (unhealthyServices.length === services.length) {
-    return res.status(503).send(`Desco is unhealthy: ${unhealthyServices.join(', ')} are down`);
+    return res.status(503).send(`Bkash is unhealthy: ${unhealthyServices.join(', ')} are down`);
   }
 
   return res
     .status(200)
-    .send(`Desco is healthy but ${unhealthyServices.join(', ')} ${unhealthyServices.length > 1 ? 'are' : 'is'} not listening`);
+    .send(`Bkash is healthy but ${unhealthyServices.join(', ')} ${unhealthyServices.length > 1 ? 'are' : 'is'} not listening`);
 };
 
 
@@ -131,11 +131,11 @@ const checkAllServicesHealth = async () => {
   const unhealthyServices = results.filter(r => !r.healthy).map(r => r.name);
 
   if (unhealthyServices.length === 0) {
-    console.log('✅ Desco is healthy');
+    console.log('✅ Bkash is healthy');
   } else if (unhealthyServices.length === services.length) {
-    console.warn(`⚠️ Desco is unhealthy: ${unhealthyServices.join(', ')} are down`);
+    console.warn(`⚠️ Bkash is unhealthy: ${unhealthyServices.join(', ')} are down`);
   } else {
-    console.warn(`⚠️ Desco is partially healthy but ${unhealthyServices.join(', ')} ${unhealthyServices.length > 1 ? 'are' : 'is'} not listening`);
+    console.warn(`⚠️ Bkash is partially healthy but ${unhealthyServices.join(', ')} ${unhealthyServices.length > 1 ? 'are' : 'is'} not listening`);
   }
 };
 
