@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bkash-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bkash
+  template:
+    metadata:
+      labels:
+        app: bkash
+    spec:
+      containers:
+        - name: bkash
+          image: nazmul4532brainstation/bkash-service:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: KAIFA_HOST
+              value: "kaifa-service.kaifa.svc.cluster.local"
+            - name: KAIFA_PORT
+              value: "80"
+            - name: AMS_HOST
+              value: "ams-service.ams.svc.cluster.local"
+            - name: AMS_PORT
+              value: "80"
+            - name: DESCO_HOST
+              value: "desco-service.desco.svc.cluster.local"
+            - name: DESCO_PORT
+              value: "80"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bkash-service
+spec:
+  selector:
+    app: bkash
+  ports:
+    - port: 80
+      targetPort: 3000
+

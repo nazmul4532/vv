@@ -1,0 +1,30 @@
+##First create the cluster
+##Then start by creating the namespace
+kubectl create namespace bkash
+
+#Initialize Project
+yarn install
+
+##Build instructions
+##Before this, it might be necessary to use docker login 
+## The credentials are nazmul4532brainstation and Void@4532 for dockerhub
+## If you want to change repository, the service yaml file needs to be updated
+
+##Normally build and push images using these
+docker build -t nazmul4532brainstation/bkash-service:latest .
+docker push nazmul4532brainstation/bkash-service:latest
+
+##But Since I am building the image on a MacOS and running it on LinuxOs, I have to run
+docker build --platform linux/amd64 -t nazmul4532brainstation/bkash-service:latest .
+docker push nazmul4532brainstation/bkash-service:latest
+
+### The images built on your system might take up a lot of storage so sometimes run this command
+docker system prune -a -f
+## This will delete any unnecessary and unused docker resource from your device
+
+##Deployment instructions
+## If you make any changes to the service
+## Just build it again and restart the deployment
+
+kubectl apply -n bkash -f bkash-service.yaml
+kubectl apply -n bkash -f bkash-ingress.yaml
