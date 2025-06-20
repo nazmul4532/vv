@@ -1,5 +1,5 @@
 const axios = require('axios');
-const sendMail = require('../utils/mailer');
+
 const {
   KAIFA_URL,
   KAIFA_HEALTH_URL,
@@ -144,25 +144,10 @@ const checkAllServicesHealth = async () => {
   }
 };
 
-const sendDummyMail = async (req, res) => {
-  try {
-    await sendMail(
-      '📧 Test Email from Bkash System',
-      'This is a dummy email to confirm that SMTP and recipient configuration are working correctly.'
-    );
-
-    res.status(200).send('✅ Dummy email sent successfully');
-  } catch (err) {
-    console.error('❌ Failed to send dummy email:', err);
-    res.status(500).send('❌ Failed to send dummy email');
-  }
-};
-
 // --- Export ---
 module.exports = {
   handlePost,
   checkHealth,
   handleHealthCheck,
-  checkAllServicesHealth,
-  sendDummyMail
+  checkAllServicesHealth
 };
